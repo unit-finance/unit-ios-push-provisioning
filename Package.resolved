@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "socure-sigmadevice-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/socure-inc/socure-sigmadevice-sdk-ios",
+      "state" : {
+        "revision" : "092792fa4b24d188f9b4580cc03dee10ff5b44de",
+        "version" : "4.8.1"
+      }
+    },
+    {
+      "identity" : "unit-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/unit-finance/unit-ios-sdk.git",
+      "state" : {
+        "branch" : "feat/expose-unitcommon-product",
+        "revision" : "11bc1e206900dc70501810d6eb45e2405b9b0794"
+      }
+    }
+  ],
+  "version" : 2
+}
