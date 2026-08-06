@@ -1,0 +1,33 @@
+name: Prepare Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  prepare-release:
+    name: Create draft release
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from PR title
+        run: |
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create draft release
+        run: |
+          gh release create "${{ env.VERSION }}" \
+            --title "Version ${{ env.VERSION }}" \
+            --notes "Release ${{ env.VERSION }}" \
+            --draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
