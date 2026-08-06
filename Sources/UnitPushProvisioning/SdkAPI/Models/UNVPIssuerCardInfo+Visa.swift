@@ -13,8 +13,8 @@ import VisaPushProvisioning
 
 #if canImport(VisaPushProvisioning)
 public extension UNVPIssuerCardInfo {
-    @objc(UNIssuerCardInfoToVP)
-    public func toVisa() -> VPIssuerCardInfo {
+    @objc(asVisaCardInfo)
+    func asVisaCardInfo() -> VPIssuerCardInfo {
         return VPIssuerCardInfo(last4Digits: last4Digits)
     }
 }
@@ -22,8 +22,8 @@ public extension UNVPIssuerCardInfo {
 
 #if canImport(VisaPushProvisioning)
 extension VPIssuerCardInfo {
-    @objc(VPIssuerCardInfoToUN)
-    func toUN() -> UNVPIssuerCardInfo {
+    @objc(asUnitCardInfo)
+    func asUnitCardInfo() -> UNVPIssuerCardInfo {
         return UNVPIssuerCardInfo(last4Digits: last4Digits)
     }
 }

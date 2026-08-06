@@ -12,7 +12,7 @@ import VisaPushProvisioning
 
 public protocol UNPushProvisioningManagerProtocol {
     #if canImport(VisaPushProvisioning)
-    func last4DigitsToVPCardInfo(_ last4Digits: String) -> VPIssuerCardInfo
+    func makeVisaCardInfo(last4Digits: String) -> VPIssuerCardInfo
     #endif
 }
 

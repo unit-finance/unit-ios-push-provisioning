@@ -16,8 +16,8 @@ public final class UNPushProvisioningSDKManager: NSObject, UNPushProvisioningMan
     public override init() { super.init() }
 
 #if canImport(VisaPushProvisioning)
-    @objc(last4DigitsToVPCardInfo:)
-    public func last4DigitsToVPCardInfo(_ last4Digits: String) -> VPIssuerCardInfo {
+    @objc(makeVisaCardInfoWithLast4Digits:)
+    public func makeVisaCardInfo(last4Digits: String) -> VPIssuerCardInfo {
         let vpCardInfo = VPIssuerCardInfo(last4Digits: last4Digits)
         return vpCardInfo
     }
