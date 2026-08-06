@@ -6,21 +6,34 @@ on:
       - closed
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      version_number:
+        description: Version to create a draft release for (manual test run)
+        required: true
 
 jobs:
   prepare-release:
     name: Create draft release
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/'))
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Extract version from PR title
+      - name: Resolve version
         run: |
-          VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?')
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version_number }}"
+          else
+            VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?')
+          fi
+          if [ -z "$VERSION" ]; then
+            echo "ERROR: Could not resolve a version"
+            exit 1
+          fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create draft release
