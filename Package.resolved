@@ -1,4 +1,5 @@
 {
+  "originHash" : "d228fa2012db1bbd993d764fad125aa435e4fe97d2f68dabedba33388db6d34d",
   "pins" : [
     {
       "identity" : "socure-sigmadevice-sdk-ios",
@@ -15,9 +16,9 @@
       "location" : "https://github.com/unit-finance/unit-ios-sdk.git",
       "state" : {
         "branch" : "feat/expose-unitcommon-product",
-        "revision" : "11bc1e206900dc70501810d6eb45e2405b9b0794"
+        "revision" : "483a690591bb0ac649a9e7de860bd3783ea25dce"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
