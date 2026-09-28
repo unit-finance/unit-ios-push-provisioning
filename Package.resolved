@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/unit-finance/unit-ios-sdk.git",
       "state" : {
-        "branch" : "feat/expose-unitcommon-product",
-        "revision" : "11bc1e206900dc70501810d6eb45e2405b9b0794"
+        "branch" : "main",
+        "revision" : "8672cac02b682732d03a6ea3a4335dac7c541c23"
       }
     }
   ],

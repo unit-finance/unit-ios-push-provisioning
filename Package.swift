@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "UnitPushProvisioning", targets: ["UnitPushProvisioning"])
     ],
     dependencies: [
-        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", branch: "feat/expose-unitcommon-product")
+        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", branch: "main")
     ],
     targets: [
         .target(
