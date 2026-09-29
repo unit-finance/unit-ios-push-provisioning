@@ -7,7 +7,7 @@ let package = Package(
         .iOS(.v15)
     ],
     products: [
-        .library(name: "UnitPushProvisioning", targets: ["UnitPushProvisioning"])
+        .library(name: "UnitPushProvisioning", type: .dynamic, targets: ["UnitPushProvisioning"])
     ],
     dependencies: [
         .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", from: "1.1.0")
