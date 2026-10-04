@@ -34,37 +34,83 @@ public final class UNPushProvisioningSDKManager: NSObject, UNPushProvisioningMan
 
     @objc
     public func configure(environment: VisaInAppEnvironment, unitEnvironment: UNEnvironment, visaAppId: String) throws {
-        let config = VisaInAppConfig(environment: environment, appId: visaAppId)
-        try VisaInAppCore.configure(config: config)
-        self.unitEnvironment = unitEnvironment
+        UNVisaVersionCompatibility.warnIfUnsupported()
+        do {
+            let config = VisaInAppConfig(environment: environment, appId: visaAppId)
+            try VisaInAppCore.configure(config: config)
+            self.unitEnvironment = unitEnvironment
+        } catch {
+            throw mapError(error)
+        }
     }
 
     @objc
     public func walletStatus(cardId: String, customerToken: String) async throws -> VPProvisionStatus {
-        let response = try await prepare(cardId: cardId, customerToken: customerToken)
-        let applePayWallet = response.wallets.first { $0.code == .ApplePayPushProvision }
-        let currentDeviceToken = applePayWallet?.tokens.first { $0.deviceType == .CurrentDevice }
-        return currentDeviceToken?.provisionStatus ?? .NotAvailable
+        do {
+            let response = try await prepare(cardId: cardId, customerToken: customerToken)
+            let applePayWallet = response.wallets.first { $0.code == .ApplePayPushProvision }
+            let currentDeviceToken = applePayWallet?.tokens.first { $0.deviceType == .CurrentDevice }
+            return currentDeviceToken?.provisionStatus ?? .NotAvailable
+        } catch {
+            throw mapError(error)
+        }
     }
 
     @objc
     public func startCardProvisioning(cardId: String, customerToken: String) async throws -> VPProvisionStatus {
-        _ = try await prepare(cardId: cardId, customerToken: customerToken)
-        guard let provisioningInterface else {
-            throw UNPushProvisioningError.notConfigured
+        do {
+            _ = try await prepare(cardId: cardId, customerToken: customerToken)
+            guard let provisioningInterface else {
+                throw UNPushProvisioningError.notConfigured
+            }
+            guard let viewController = await UIApplication.shared.topViewController() else {
+                throw UNPushProvisioningError.noPresentingViewController
+            }
+            let response: VPCardProvisioningResponse = try await withCheckedThrowingContinuation { continuation in
+                cardProvisioningContinuation = continuation
+                let request = VPCardProvisioningRequest(walletCode: .ApplePayPushProvision, walletName: "apple")
+                DispatchQueue.main.async {
+                    provisioningInterface.startCardProvisioning(request: request, initialView: viewController)
+                }
+            }
+            let currentDeviceToken = response.tokens.first { $0.deviceType == .CurrentDevice }
+            return currentDeviceToken?.provisionStatus ?? .NotAvailable
+        } catch {
+            throw mapError(error)
         }
-        guard let viewController = await UIApplication.shared.topViewController() else {
-            throw UNPushProvisioningError.noPresentingViewController
+    }
+
+    // MARK: completion-handler variants
+
+    public func configure(environment: VisaInAppEnvironment, unitEnvironment: UNEnvironment, visaAppId: String, completion: @escaping UNDefaultCompletion) {
+        do {
+            try configure(environment: environment, unitEnvironment: unitEnvironment, visaAppId: visaAppId)
+            completion(.success(()))
+        } catch {
+            completion(.failure(mapError(error)))
         }
-        let response: VPCardProvisioningResponse = try await withCheckedThrowingContinuation { continuation in
-            cardProvisioningContinuation = continuation
-            let request = VPCardProvisioningRequest(walletCode: .ApplePayPushProvision, walletName: "apple")
-            DispatchQueue.main.async {
-                provisioningInterface.startCardProvisioning(request: request, initialView: viewController)
+    }
+
+    public func walletStatus(cardId: String, customerToken: String, completion: @escaping UNProvisionStatusCompletion) {
+        Task { @MainActor in
+            do {
+                let status = try await walletStatus(cardId: cardId, customerToken: customerToken)
+                completion(.success(status))
+            } catch {
+                completion(.failure(mapError(error)))
             }
         }
-        let currentDeviceToken = response.tokens.first { $0.deviceType == .CurrentDevice }
-        return currentDeviceToken?.provisionStatus ?? .NotAvailable
+    }
+
+    public func startCardProvisioning(cardId: String, customerToken: String, completion: @escaping UNProvisionStatusCompletion) {
+        Task { @MainActor in
+            do {
+                let status = try await startCardProvisioning(cardId: cardId, customerToken: customerToken)
+                completion(.success(status))
+            } catch {
+                completion(.failure(mapError(error)))
+            }
+        }
     }
 #endif
 }
@@ -95,6 +141,13 @@ private extension UNPushProvisioningSDKManager {
         let encryptedPayload = try await UNCardAPI(environment: unitEnvironment)
             .mobileWalletPayload(cardId: cardId, signedNonce: signedNonce, customerToken: customerToken)
         return try await supportedWallets(for: encryptedPayload)
+    }
+
+    func mapError(_ error: Error) -> UNPushProvisioningError {
+        if let error = error as? UNPushProvisioningError { return error }
+        if let error = error as? UNNetworkError { return .network(error) }
+        if let error = error as? VPError { return .visa(error) }
+        return .unknown(error)
     }
 }
 #endif
