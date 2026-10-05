@@ -8,5 +8,5 @@
 import Foundation
 
 public class UnitPushProvisioningSDK {
-    public static let manager: UNPushProvisioningManagerProtocol = UNPushProvisioningSDKManager()
+    public static let manager: UNPushProvisioningManagerProtocol = UNPushProvisioningSDKManager.shared
 }
