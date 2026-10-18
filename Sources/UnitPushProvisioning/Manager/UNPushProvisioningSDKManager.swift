@@ -66,7 +66,7 @@ final class UNPushProvisioningSDKManager: NSObject, UNPushProvisioningManagerPro
             let response = try await prepare(cardId: cardId, operation: .walletStatus)
             let applePayWallet = response.wallets.first { $0.code == .ApplePayPushProvision }
             let currentDeviceToken = applePayWallet?.tokens.first { $0.deviceType == .CurrentDevice }
-            return currentDeviceToken?.provisionStatus ?? .NotAvailable
+            return currentDeviceToken?.walletStatus ?? .NotAvailable
         } catch {
             throw UNPushProvisioningError(operation: .walletStatus, error: error)
         }
@@ -90,7 +90,7 @@ final class UNPushProvisioningSDKManager: NSObject, UNPushProvisioningManagerPro
                 }
             }
             let currentDeviceToken = response.tokens.first { $0.deviceType == .CurrentDevice }
-            return currentDeviceToken?.provisionStatus ?? .NotAvailable
+            return currentDeviceToken?.walletStatus ?? .NotAvailable
         } catch {
             throw UNPushProvisioningError(operation: .startCardProvisioning, error: error)
         }
@@ -168,6 +168,18 @@ private extension UNPushProvisioningSDKManager {
     }
 }
 
+#endif
+
+#if canImport(VisaPushProvisioning)
+private extension VPToken {
+    // A token left mid verification is reported as provisioned, but it can't be used yet.
+    var walletStatus: VPProvisionStatus {
+        if tokenStatus == .RequiresActivation {
+            return .ReadyToProvision
+        }
+        return provisionStatus
+    }
+}
 #endif
 
 #if canImport(VisaPushProvisioning)
