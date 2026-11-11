@@ -8,14 +8,15 @@ let loaderBridge = "UNPushProvisioningAppLoaderBridge.m"
 
 let package = Package(
     name: "UnitPushProvisioning",
+    defaultLocalization: "en",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v16)
     ],
     products: [
         .library(name: "UnitPushProvisioning", type: .dynamic, targets: ["UnitPushProvisioning", "UnitPushProvisioningLoader"])
     ],
     dependencies: [
-        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", from: "1.2.0")
+        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", from: "1.3.0")
     ],
     targets: [
         .target(
@@ -24,7 +25,10 @@ let package = Package(
                 .product(name: "UnitCommon", package: "unit-ios-sdk")
             ],
             path: "Sources/UnitPushProvisioning",
-            exclude: ["\(loaderPath)/\(loaderBridge)"]
+            exclude: ["\(loaderPath)/\(loaderBridge)"],
+            resources: [
+                .process("Resources/Localizable.xcstrings")
+            ]
         ),
         .target(
             name: "UnitPushProvisioningLoader",
