@@ -47,36 +47,18 @@ public struct UNPushProvisioningError: Error {
 
 extension UNPushProvisioningError.Reason: CustomStringConvertible {
     public var description: String {
-        switch self {
-        case .notConfigured:
-            return "push provisioning is not configured, call configure(environment:visaAppId:) first"
-        case .missingCustomerToken:
-            return "no customer token is set, set customerToken first"
-        case .noPresentingViewController:
-            return "no view controller is available to present the provisioning flow"
-        case .networkFailed:
-            return "the Unit API request failed"
-        case .visaFailed:
-            return "the Visa SDK returned an error"
-        case .visaSDKMissing:
-            return "the Visa SDK is not linked, add the Visa frameworks to the app"
-        case .unsupportedVisaVersion:
-            return "the embedded Visa SDK version is not supported"
-        case .missingProvisioningEntitlement:
-            return "the app is missing the Apple Pay in-app provisioning entitlement"
-        case .internalError:
-            return "internal SDK error"
-        }
+        return UNPushProvisioningStrings.string(forKey: "pushProvisioning.error.\(rawValue)")
     }
 }
 
 extension UNPushProvisioningError: CustomStringConvertible {
     public var description: String {
-        var result = "Error in \(operation.rawValue): \(reason)"
-        if let details {
-            result += " (\(details))"
+        guard let details else {
+            let format = UNPushProvisioningStrings.string(forKey: "pushProvisioning.error.format")
+            return String(format: format, operation.rawValue, reason.description)
         }
-        return result
+        let format = UNPushProvisioningStrings.string(forKey: "pushProvisioning.error.formatWithDetails")
+        return String(format: format, operation.rawValue, reason.description, details)
     }
 }
 
