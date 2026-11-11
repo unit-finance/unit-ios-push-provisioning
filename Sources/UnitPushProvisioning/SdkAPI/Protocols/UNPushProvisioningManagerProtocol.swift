@@ -12,6 +12,8 @@ import VisaPushProvisioning
 #endif
 
 public protocol UNPushProvisioningManagerProtocol: AnyObject {
+    var ui: UNPushProvisioningUI { get }
+
     /// The customer token used for Unit API calls. Shared with the other Unit SDKs: setting it here or there updates both.
     var customerToken: String? { get set }
 

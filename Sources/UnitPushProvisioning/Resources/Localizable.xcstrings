@@ -1,0 +1,138 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "pushProvisioning.error.format" : {
+      "comment" : "Push provisioning error. %1$@ is the failed operation, %2$@ is the reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error in %1$@: %2$@"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.formatWithDetails" : {
+      "comment" : "Push provisioning error. %1$@ is the failed operation, %2$@ is the reason, %3$@ is technical details.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error in %1$@: %2$@ (%3$@)"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.internalError" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "internal SDK error"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.missingCustomerToken" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no customer token is set, set customerToken first"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.missingProvisioningEntitlement" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the app is missing the Apple Pay in-app provisioning entitlement"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.networkFailed" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Unit API request failed"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.noPresentingViewController" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no view controller is available to present the provisioning flow"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.notConfigured" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "push provisioning is not configured, call configure(environment:visaAppId:) first"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.unsupportedVisaVersion" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the embedded Visa SDK version is not supported"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.visaFailed" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Visa SDK returned an error"
+          }
+        }
+      }
+    },
+    "pushProvisioning.error.visaSDKMissing" : {
+      "comment" : "Description of a push provisioning error reason.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Visa SDK is not linked, add the Visa frameworks to the app"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

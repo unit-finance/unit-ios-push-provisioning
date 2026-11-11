@@ -9,14 +9,17 @@ import Foundation
 /// error callbacks only, so apps that don't register one see nothing; none of them stops the SDK from being used.
 enum UNPushProvisioningRequirements {
     /// The Visa in-app SDK version this SDK was built and verified against.
-    static let supportedVisaVersion = "5.6.0"
+    static let supportedVisaVersion = "5.12.0"
+
+    // VisaAnalytics is versioned on its own track, separately from the rest of the VDE SDK.
+    private static let supportedAnalyticsVersion = "2.1.0"
 
     private static let visaFrameworks = [
-        "VisaPushProvisioning",
-        "VisaInAppModuleCore",
-        "VisaFeatureModuleCore",
-        "VisaAnalytics",
-        "VisaMobileFoundation"
+        "VisaPushProvisioning": supportedVisaVersion,
+        "VisaInAppModuleCore": supportedVisaVersion,
+        "VisaFeatureModuleCore": supportedVisaVersion,
+        "VisaMobileFoundation": supportedVisaVersion,
+        "VisaAnalytics": supportedAnalyticsVersion
     ]
 
     private static let provisioningEntitlement = "com.apple.developer.payment-pass-provisioning"
@@ -39,10 +42,10 @@ private extension UNPushProvisioningRequirements {
 
     static func checkVisaVersions() {
         var mismatched = [String: String]()
-        for name in visaFrameworks {
+        for (name, supported) in visaFrameworks {
             let version = embeddedVersion(ofFramework: name)
-            if version.map(majorMinor) != majorMinor(supportedVisaVersion) {
-                mismatched[name] = version ?? "unknown"
+            if version.map(majorMinor) != majorMinor(supported) {
+                mismatched[name] = "\(version ?? "unknown") (supported \(supported))"
             }
         }
         guard !mismatched.isEmpty else { return }
