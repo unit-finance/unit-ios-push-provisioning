@@ -24,7 +24,7 @@ extension VPError: @retroactive Error {}
 final class UNPushProvisioningSDKManager: NSObject, UNPushProvisioningManagerProtocol {
     @objc static let shared = UNPushProvisioningSDKManager()
 
-    let ui: UNPushProvisioningUI = UNPushProvisioningUILayer()
+    @objc let ui: UNPushProvisioningUI = UNPushProvisioningUILayer()
 
     private let errorReporter = UNPushProvisioningErrorReporter.shared
     private let customerTokenStore: UNCustomerTokenStoring
