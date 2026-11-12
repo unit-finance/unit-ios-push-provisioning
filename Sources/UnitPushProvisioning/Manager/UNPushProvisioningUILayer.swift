@@ -5,7 +5,7 @@
 
 import Foundation
 
-final class UNPushProvisioningUILayer: UNPushProvisioningUI {
+final class UNPushProvisioningUILayer: NSObject, UNPushProvisioningUI {
     @MainActor
     func getAddToWalletButton(onTap: (() -> Void)?) -> UNAddToWalletButton {
         return UNAddToWalletButton(onTap: onTap)
