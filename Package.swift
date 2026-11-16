@@ -16,7 +16,7 @@ let package = Package(
         .library(name: "UnitPushProvisioning", type: .dynamic, targets: ["UnitPushProvisioning", "UnitPushProvisioningLoader"])
     ],
     dependencies: [
-        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", from: "1.3.0")
+        .package(url: "https://github.com/unit-finance/unit-ios-sdk.git", .upToNextMinor(from: "1.3.0"))
     ],
     targets: [
         .target(
